@@ -228,4 +228,285 @@ return 0;
 }
 
 
+9. DFA to accept string ending with 00.
 
+%{
+%}
+%s A B DEAD
+%%
+<INITIAL>0 BEGIN A;
+<INITIAL>1 BEGIN INITIAL;
+<INITIAL>[^01\n] BEGIN DEAD;
+<INITIAL>\n BEGIN INITIAL; {printf("Not Accepted\n");}
+  
+<A>0 BEGIN B;
+<A>1 BEGIN INITIAL;
+<A>[^01\n] BEGIN DEAD;
+<A>\n BEGIN INITIAL; {printf("Not Accepted\n");}
+  
+<B>0 BEGIN B;
+<B>1 BEGIN INITIAL;
+<B>[^01\n] BEGIN DEAD;
+<B>\n BEGIN INITIAL; {printf("Accepted\n");} 
+  
+<DEAD>[^\n] BEGIN DEAD;
+<DEAD>\n BEGIN INITIAL; {printf("Invalid\n");} 
+%%
+int main(){
+	printf("Enter String: \n");
+	yylex();
+	return 0;
+
+}
+
+10. DFA to accpet even number of 1s
+
+%{
+%}
+%s A B DEAD
+%%
+<INITIAL>0 BEGIN A;
+<INITIAL>1 BEGIN INITIAL;
+<INITIAL>[^01\n] BEGIN DEAD;
+<INITIAL>\n BEGIN INITIAL; {printf("Not Accepted\n");}
+  
+<A>1 BEGIN B;
+<A>0 BEGIN A;
+<A>[^01\n] BEGIN DEAD;
+<A>\n BEGIN INITIAL; {printf("Not Accepted\n");}
+  
+<B>0 BEGIN A;
+<B>1 BEGIN INITIAL;
+<B>[^01\n] BEGIN DEAD;
+<B>\n BEGIN INITIAL; {printf("Accepted\n");} 
+  
+<DEAD>[^\n] BEGIN DEAD;
+<DEAD>\n BEGIN INITIAL; {printf("Invalid\n");} 
+%%
+int main(){
+	printf("Enter String: \n");
+	yylex();
+	return 0;
+
+}
+
+11.  Ending with 01
+
+%{
+%}
+%s A B DEAD
+%%
+<INITIAL>0 BEGIN A;
+<INITIAL>1 BEGIN INITIAL;
+<INITIAL>[^01\n] BEGIN DEAD;
+<INITIAL>\n BEGIN INITIAL; {printf("Not Accepted\n");}
+  
+<A>0 BEGIN A;
+<A>1 BEGIN B;
+<A>[^01\n] BEGIN DEAD;
+<A>\n BEGIN INITIAL; {printf("Not Accepted\n");}
+  
+<B>0 BEGIN A;
+<B>1 BEGIN INITIAL;
+<B>[^01\n] BEGIN DEAD;
+<B>\n BEGIN INITIAL; {printf("Accepted\n");} 
+  
+<DEAD>[^\n] BEGIN DEAD;
+<DEAD>\n BEGIN INITIAL; {printf("Invalid\n");} 
+%%
+int main(){
+	printf("Enter String: \n");
+	yylex();
+	return 0;
+
+}
+
+
+12. DFA starting with 11
+
+%{
+%}
+%s A B DEAD
+%%
+
+<INITIAL>1 BEGIN A;
+<INITIAL>[^1\n] BEGIN DEAD;
+<INITIAL>\n BEGIN INITIAL; {printf("Not Accepted\n");}
+  
+<A>1 BEGIN B;
+<A>[^1\n] BEGIN DEAD;
+<A>\n BEGIN INITIAL; {printf("Not Accepted\n");}
+  
+<B>0 BEGIN B;
+<B>1 BEGIN B;
+<B>[^01\n] BEGIN DEAD;
+<B>\n BEGIN INITIAL; {printf("Accepted\n");} 
+  
+<DEAD>[^\n] BEGIN DEAD;
+<DEAD>\n BEGIN INITIAL; {printf("Invalid\n");} 
+%%
+int main(){
+	printf("Enter String: \n");
+	yylex();
+	return 0;
+
+}
+
+
+13.  odd 1 and even 0
+
+%{
+%}
+%s A B C DEAD
+%%
+<INITIAL>0 BEGIN A;
+<INITIAL>1 BEGIN B;
+<INITIAL>[^01\n] BEGIN DEAD;
+<INITIAL>\n BEGIN INITIAL; {printf("Not Accepted\n");}
+  
+<A>0 BEGIN INITIAL;
+<A>1 BEGIN C;
+<A>[^01\n] BEGIN DEAD;
+<A>\n BEGIN INITIAL; {printf("NOT Accepted\n");}
+  
+<B>0 BEGIN C;
+<B>1 BEGIN INITIAL;
+<B>[^01\n] BEGIN DEAD;
+<B>\n BEGIN INITIAL; {printf("Accepted\n");} 
+  
+<C>0 BEGIN B;
+<C>1 BEGIN A;
+<C>[^01\n] BEGIN DEAD;
+<C>\n BEGIN INITIAL; {printf("Not Accepted\n");} 
+
+  
+<DEAD>[^\n] BEGIN DEAD;
+<DEAD>\n BEGIN INITIAL; {printf("Invalid\n");} 
+%%
+int main(){
+	printf("Enter String: \n");
+	yylex();
+	return 0;
+
+}
+
+
+14. Design a DFA in LEX Code which accepts string containing even number of ‘a’ and
+even number of ‘b’ over input alphabet {a, b}.
+%{
+%}
+%s A B C DEAD
+%%
+<INITIAL>a BEGIN A;
+<INITIAL>b BEGIN B;
+<INITIAL>[^ab\n] BEGIN DEAD;
+<INITIAL>\n BEGIN INITIAL; {printf("Accepted\n");}
+
+<A>a BEGIN INITIAL;
+<A>b BEGIN C;
+<A>[^ab\n] BEGIN DEAD;
+<A>\n BEGIN INITIAL; {printf("NOT Accepted\n");}
+
+<B>a BEGIN C;
+<B>b BEGIN INITIAL;
+<B>[^ab\n] BEGIN DEAD;
+<B>\n BEGIN INITIAL; {printf("NOT Accepted\n");}
+
+<C>a BEGIN B;
+<C>b BEGIN A;
+<C>[^ab\n] BEGIN DEAD;
+<C>\n BEGIN INITIAL; {printf("Not Accepted\n");}
+
+<DEAD>[^\n] BEGIN DEAD;
+<DEAD>\n BEGIN INITIAL; {printf("Invalid\n");}
+%%
+int main(){
+printf("Enter String: \n");
+yylex();
+return 0;
+}
+
+ 
+
+15. Design a DFA in LEX Code which accepts string containing third last element ‘a’
+over input alphabet {a, b}.
+%{
+%}
+%s A B C D E F G DEAD
+%%
+<INITIAL>a BEGIN A;
+<INITIAL>b BEGIN INITIAL;
+<INITIAL>[^ab\n] BEGIN DEAD;
+<INITIAL>\n BEGIN INITIAL; {printf("Not Accepted\n");}
+
+<A>a BEGIN B;
+<A>b BEGIN C;
+<A>[^ab\n] BEGIN DEAD;
+<A>\n BEGIN INITIAL; {printf("NOT Accepted\n");}
+
+<B>a BEGIN D;
+<B>b BEGIN E;
+<B>[^ab\n] BEGIN DEAD;
+<B>\n BEGIN INITIAL; {printf("NOT Accepted\n");}
+
+<C>a BEGIN F;
+<C>b BEGIN G;
+<C>[^ab\n] BEGIN DEAD;
+<C>\n BEGIN INITIAL; {printf("Not Accepted\n");}
+<D>a BEGIN D;
+<D>b BEGIN E;
+<D>[^ab\n] BEGIN DEAD;
+<D>\n BEGIN INITIAL; {printf("Accepted\n");}
+<E>a BEGIN F;
+<E>b BEGIN G;
+<E>[^ab\n] BEGIN DEAD;
+<E>\n BEGIN INITIAL; {printf("Accepted\n");}
+<F>a BEGIN B;
+<F>b BEGIN C;
+<F>[^ab\n] BEGIN DEAD;
+<F>\n BEGIN INITIAL; {printf("Accepted\n");}
+<G>a BEGIN A;
+<G>b BEGIN INITIAL;
+<G>[^ab\n] BEGIN DEAD;
+<G>\n BEGIN INITIAL; {printf("Accepted\n");}
+
+<DEAD>[^\n] BEGIN DEAD;
+<DEAD>\n BEGIN INITIAL; {printf("Invalid\n");}
+%%
+int main(){
+printf("Enter String: \n");
+yylex();
+return 0;
+}
+
+
+
+16. Design a DFA in LEX Code to Identify and print Integer & Float Constants and
+Identifier.
+%{
+%}
+%s A B C DEAD
+%%
+<INITIAL>[0-9]+ BEGIN A;
+<INITIAL>[0-9]+[.][0-9]+ BEGIN B;
+<INITIAL>[A-Za-z_][A-Za-z0-9_]* BEGIN C;
+<INITIAL>[^\n] BEGIN DEAD;
+<INITIAL>\n BEGIN INITIAL; {printf("Not Accepted\n");}
+<A>[^\n] BEGIN DEAD;
+<A>\n BEGIN INITIAL; {printf("Integer\n");}
+<B>[^\n] BEGIN DEAD;
+<B>\n BEGIN INITIAL; {printf("Float\n");}
+<C>[^\n] BEGIN DEAD;
+<C>\n BEGIN INITIAL; {printf("Identifier\n");}
+<DEAD>[^\n] BEGIN DEAD;
+<DEAD>\n BEGIN INITIAL; {printf("Invalid\n");}
+%%
+
+int yywrap(){
+return 1;
+}
+int main(){
+printf("Enter String\n");
+yylex();
+return 0;
+}
