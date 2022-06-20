@@ -1,0 +1,398 @@
+File handling example
+<!DOCTYPE html>
+<html>
+<body>
+<?php
+$myfile = fopen("webdictionary.txt", "r") or die("Unable to open file!");
+echo fread($myfile,filesize("webdictionary.txt"));
+fclose($myfile);
+?>
+</body>
+</html>
+
+
+2.2. Write a PHP Program to read character by character
+from a file and write all the vowels in a new file.
+CODE:
+<!DOCTYPE html>
+<html>
+<body>
+<?php
+$input=fopen('input.txt',"r");
+$output=fopen('output.txt',"a");
+while(!feof($input)) { 
+$ch=fgetc($input);
+ if(preg_match("/[aeiouAEIOU]/",$ch)){
+ fwrite($output,$ch." ");
+ }
+ }
+?>
+</body>
+</html> 
+
+3. PHP file upload
+<?php
+$target_dir = "uploads/";
+$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+$uploadOk = 1;
+$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+// Check if image file is a actual image or fake image
+if(isset($_POST["submit"])) {
+    $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+    if($check !== false) {
+        echo "File is an image - " . $check["mime"] . ".";
+        $uploadOk = 1;
+    } else {
+        echo "File is not an image.";
+        $uploadOk = 0;
+    }
+}
+// Check if file already exists
+if (file_exists($target_file)) {
+    echo "Sorry, file already exists.";
+    $uploadOk = 0;
+}
+// Check file size
+if ($_FILES["fileToUpload"]["size"] > 500000) {
+    echo "Sorry, your file is too large.";
+    $uploadOk = 0;
+}
+// Allow certain file formats
+if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+&& $imageFileType != "gif" ) {
+    echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+    $uploadOk = 0;
+}
+// Check if $uploadOk is set to 0 by an error
+if ($uploadOk == 0) {
+    echo "Sorry, your file was not uploaded.";
+// if everything is ok, try to upload file
+} else {
+    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+        echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+    } else {
+        echo "Sorry, there was an error uploading your file.";
+    }
+}
+?>
+
+
+3.3. Write a PHP program to maintain session of a particular
+user in different pages. At the end if user wants to logout,
+then destroy the session.
+ANSWER:
+Session.html
+<html>
+<body>
+ <a href="http://localhost/php/session1.php">Call Session
+program</a> </body>
+</html>
+
+Session1.php
+
+<?php
+ session_start();
+?>
+<html>
+ <body>
+ <?php
+ $_SESSION["name"] = "ABC"; $_SESSION["age"] =
+"22";
+ echo "Session information are set successfully.<br/>";
+ ?>
+ <a href="http://localhost/php/session2.php">Visit next page</a>
+</body>
+</html>
+
+Session2.php
+
+<?php
+ session_start();
+?>
+<html>
+ <body>
+ <?php
+ echo "Name is: ".$_SESSION["name"]."<br />";
+ echo "Age is: " .$_SESSION["age"];
+ ?>
+ <br>
+ <br>
+ <a href="http://localhost/php/logout.php">click here for
+logout</a> </body>
+</html>
+
+Logout.php
+
+<?php
+ session_start(); session_destroy();
+ echo "Logged Out Successfully";
+?> 
+
+
+
+4.SELECT Query using Procedural Method :
+php script to retrieve the data from database
+
+showrecord.html
+
+<!DOCTYPE html>
+<html>
+<body>
+<div class="title">
+<h2>Emp record From  Database Using PHP.</h2>
+</div>
+<form action="http://localhost/san/emprecord.php" method="post">
+<h2>Employee Record Details</h2>
+<input class="submit" name="submit" type="submit" value="Show Record">
+</form>
+</body>
+</html>
+
+emprecord.php
+
+<!DOCTYPE html>
+<html>
+<body>
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "mydb";
+
+// Create connection
+$conn = mysqli_connect($servername, $username, $password, $dbname);
+// Check connection
+if (!$conn)
+ {
+die("Connection failed: " . mysqli_connect_error());
+}
+
+$sql = "SELECT * FROM emp";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0) 
+{
+echo "<table border=1>";
+echo "<tr>";
+echo "<th>NAME</th>";
+echo "<th>CODE</th>";
+echo "<th>DESIGNATION</th>";
+echo "<th>SALARY</th>";
+echo "</tr>";
+while ($row = mysqli_fetch_array($result))
+        {
+echo "<tr>";
+echo "<td>".$row['name']."</td>";
+echo "<td>".$row['code']."</td>";
+echo "<td>".$row['desig']."</td>";
+echo "<td>".$row['salary']."</td>";
+echo "</tr>";
+        }
+echo "</table>";
+mysqli_free_result($result); // close the resultset.
+    }
+else {
+echo "No matching records are found.";
+    }
+mysqli_close($conn);
+?>
+</body>
+</html>
+
+
+5.Insert Record into database
+
+Formdata.html
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>PHP insertion</title>
+<body>
+<div class="title">
+<h2>Insert Data In Database Using PHP.</h2>
+</div>
+<form action="http://localhost/san/insertrecord.php" method="post">
+<h2>Form</h2>
+<label>NAME:</label>
+<input class="input" name="nm" type="text" value="">
+<label>CODE:</label>
+<input class="input" name="cd" type="text" value="">
+<label>DESIGNATION:</label>
+<input class="input" name="ds" type="text" value="">
+<label>SALARY:</label>
+<input class="input" name="sal" type="text" value="">
+<input class="submit" name="submit" type="submit" value="Insert">
+</form>
+</body>
+</html>
+
+insertrecord.php
+
+<!DOCTYPE html>
+<html>
+<body>
+<?php
+if(isset($_POST['submit']))
+{
+$ename = $_POST['nm'];
+$ecode = $_POST['cd'];
+$edesig = $_POST['ds'];
+$esal = $_POST['sal'];
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "mydb";
+//create connection 
+$conn = mysqli_connect($servername, $username, $password, $dbname);
+// Check connection
+if (!$conn)
+ {
+die("Connection failed: " . mysqli_connect_error());
+}
+$sql = "INSERT INTO emp VALUES ('$ename','$ecode','$edesig','$esal')";
+if (mysqli_query($conn, $sql)) {
+echo "New record created successfully";
+} else {
+echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+}
+mysqli_close($conn);
+}
+?>
+</body>
+</html>
+
+
+6.Update Record into database
+Search.html
+<!DOCTYPE html>
+<html>
+<head>
+<title>PHP insertion</title>
+<body>
+<div class="title">
+<h2>Search Data In Database Using PHP.</h2>
+</div>
+<form action="http://localhost/san/update.php" method="post">
+<h2>Form</h2>
+<label>Enter Code:</label>
+<input class="input" name="cd" type="text" value="">
+<input class="submit" name="submit" type="submit" value="search">
+</form>
+</body>
+</html>
+
+Update.php
+
+<!DOCTYPE html>
+<html>
+<body>
+<?php
+if(isset($_POST['submit']))
+{
+$ecode = $_POST['cd'];
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "mydb";
+//create connection 
+$conn = mysqli_connect($servername, $username, $password, $dbname);
+// Check connection
+if (!$conn)
+ {
+die("Connection failed: " . mysqli_connect_error());
+}
+
+
+$sql="UPDATE emp SET salary=salary+5001 WHERE code='$ecode'";
+if (mysqli_query($conn, $sql)) 
+{
+echo "Record update successfully";
+} 
+else
+ {
+echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+}
+mysqli_close($conn);
+}
+?>
+</body>
+</html>
+
+
+7. Delete Record form database
+
+<!DOCTYPE html>
+<html>
+<body>
+<div class="title">
+<h2>Search Data In Database Using PHP.</h2>
+</div>
+<form action="http://localhost/san/delete.php" method="post">
+<h2>Form</h2>
+<label>Enter Code:</label>
+<input class="input" name="cd" type="text" value="">
+<input class="submit" name="submit" type="submit" value="delete">
+</form>
+</body>
+</html>
+
+Delete.php
+
+<!DOCTYPE html>
+<html>
+<body>
+<?php
+if(isset($_POST['submit']))
+{
+$ecode = $_POST['cd'];
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "mydb";
+//create connection 
+$conn = mysqli_connect($servername, $username, $password, $dbname);
+// Check connection
+if (!$conn)
+ {
+die("Connection failed: " . mysqli_connect_error());
+}
+
+
+$sql="delete from emp WHERE code='$ecode'";
+if (mysqli_query($conn, $sql)) 
+{
+echo "Record deleted successfully";
+} 
+else
+ {
+echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+}
+mysqli_close($conn);
+}
+?>
+</body>
+</html>
+
+8. Create database
+<?php
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+
+    // Create connection
+    $conn = mysqli_connect($servername, $username, $password);
+    // Check connection
+    if (!$conn) {
+      die("Connection failed: " . mysqli_connect_error());
+    }
+
+    // Create database
+    $sql = "CREATE DATABASE myDB";
+    if (mysqli_query($conn, $sql)) {
+      echo "Database created successfully";
+    } 
+    else {
+      echo "Error creating database: " . mysqli_error($conn);
+    }
+    mysqli_close($conn);
+?>
