@@ -396,3 +396,32 @@ mysqli_close($conn);
     }
     mysqli_close($conn);
 ?>
+
+
+9. create table
+<?php
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+
+    // Create connection
+    $conn = mysqli_connect($servername, $username, $password,"myDB");
+    // Check connection
+    if (!$conn) {
+      die("Connection failed: " . mysqli_connect_error());
+    }
+
+    $sql = "CREATE TABLE employee (
+    name VARCHAR(20),
+    code INT(3) PRIMARY KEY,
+    designation VARCHAR(5),
+    salary INT
+    )";
+    if (mysqli_query($conn, $sql)) {
+        echo "Table employee created successfully";
+    } 
+    else {
+        echo "Error creating table: " . mysqli_error($conn);
+    }
+      mysqli_close($conn);
+?>
